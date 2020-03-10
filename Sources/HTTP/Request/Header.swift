@@ -3,11 +3,11 @@ import Foundation
 extension HTTP {
     struct Header {
         enum Field: String {
-            case contentType = "Content-Type"
-            case accept = "Accept"
-            case cacheControl = "Cache-Control"
             case authorization = "Authorization"
-            case enccoding = "Accept-Encoding"
+            case accept = "Accept"
+            case acceptEncoding = "Accept-Encoding"
+            case contentType = "Content-Type"
+            case cacheControl = "Cache-Control"
             case token = "Token"
         }
         enum Value: String {
