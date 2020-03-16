@@ -1,7 +1,7 @@
 import Foundation
 
 public extension HTTP {
-    public enum Method: String {
+    enum Method: String {
         case GET
         case HEAD
         

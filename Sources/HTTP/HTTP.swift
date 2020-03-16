@@ -2,7 +2,24 @@ import Foundation
 
 public class HTTP {
     
-    static func task(url: URL,
+    public static func task(url: URL,
+                     path: String,
+                     method: HTTP.Method,
+                     object: Encodable,
+                     headers: [Header.Field: String] = [:],
+                     queue: DispatchQueue = .main,
+                     completion: ((Data?) -> ())? = nil) {
+        guard let data = object.json else { return }
+        task(url: url,
+             path: path,
+             method: method,
+             body: data,
+             headers: headers,
+             queue: queue,
+             completion: completion)
+    }
+    
+    public static func task(url: URL,
                      path: String,
                      method: HTTP.Method,
                      body: Data? = nil,
@@ -17,7 +34,7 @@ public class HTTP {
         request.body = body
         
         baseTask(request: request) { (data, response, error) in
-            
+            completion?(data)
         }
     }
     

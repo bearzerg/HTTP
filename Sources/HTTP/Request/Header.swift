@@ -1,8 +1,8 @@
 import Foundation
 
-extension HTTP {
+public extension HTTP {
     struct Header {
-        enum Field: String {
+        public enum Field: String {
             case authorization = "Authorization"
             case accept = "Accept"
             case acceptEncoding = "Accept-Encoding"
@@ -10,7 +10,7 @@ extension HTTP {
             case cacheControl = "Cache-Control"
             case token = "Token"
         }
-        enum Value: String {
+        public enum Value: String {
             case json = "application/json"
             case xml = "application/xml"
             case stream = "application/octet-stream"
