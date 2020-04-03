@@ -61,38 +61,4 @@ extension HTTP {
             }.resume()
         }
     }
-    
-    public static func task(url: URL,
-                     path: String,
-                     method: String,
-                     body: Data? = nil,
-                     headers: [String: String] = [:],
-                     queue: DispatchQueue = .main,
-                     completion: ((Data?) -> ())? = nil) {
-        
-        var request = URLRequest(url: url.appendingPathComponent(path))
-        request.httpMethod = method
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        headers.forEach({request.addValue($0.value, forHTTPHeaderField: $0.key)})
-        request.httpBody = body
-        
-        task(request: request, queue: queue, completion: completion)
-    }
-    
-    private static func task(request: URLRequest,
-                             queue: DispatchQueue = .main,
-                             completion: ((Data?) -> ())? = nil) {
-        
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            if error != nil {
-                return
-            }
-            
-            guard let data = data else { return }
-            
-            queue.async { completion?(data) }
-            
-        }.resume()
-    }
 }
