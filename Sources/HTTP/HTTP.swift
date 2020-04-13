@@ -1,6 +1,8 @@
 import Foundation
 
 public class HTTP {
+    public static var jsonEncoder: JSONEncoder = JSONEncoder()
+    public static var jsonDecoder: JSONDecoder = JSONDecoder()
     
     public static func task(url: URL,
                      path: String,
@@ -38,6 +40,19 @@ public class HTTP {
         }
     }
     
+    public static func getData(url: String, completionHandler: @escaping (Data) -> Void) {
+        if let url = URL(string: url) {
+            let request = Request(url: url)
+            baseTask(request: request) { (data, response, error) in
+                if let response = response,
+                response.statusCode / 100 == 2,
+                let data = data {
+                    completionHandler(data)
+                }
+            }
+        }
+    }
+    
     private static func baseTask(request: Request,
                              handler: @escaping (Data?, HTTPURLResponse?, Error?) -> Void) {
         URLSession.shared.dataTask(with: request.raw, completionHandler: { (data, response, error) in
@@ -45,20 +60,5 @@ public class HTTP {
             guard let response = response as? HTTPURLResponse else { return }
             handler(data, response, error)
         }).resume()
-    }
-}
-
-extension HTTP {
-    
-    public static func getData(url: String, completionHandler: @escaping (Data) -> Void) {
-        if let url = URL(string: url) {
-            URLSession.shared.dataTask(with: url) { (data, response, error) in
-                if let response = response as? HTTPURLResponse,
-                    response.statusCode / 100 == 2,
-                    let data = data {
-                    completionHandler(data)
-                }
-            }.resume()
-        }
     }
 }
